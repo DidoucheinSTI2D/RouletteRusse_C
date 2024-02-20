@@ -4,12 +4,13 @@
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_mixer.h>
+#include <time.h>
 
 #include "src/includes/jeu.h"
 #include "src/includes/affichage.h"
 
 const int largeur = 1400;
-const int hauteur = 1080;
+const int hauteur = 800;
 const char * titre = "Roulette Russe C";
 Jeu jeu;
 

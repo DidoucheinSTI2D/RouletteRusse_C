@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "../includes/roulette.h"
+
 void generationPartie(int balles){
     int resultat = roulerRoulette(balles);
     victoireDefaite(resultat);

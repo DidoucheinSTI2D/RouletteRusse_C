@@ -80,5 +80,22 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
     } 
 
 // ----------- PARTIE DU JEU -----------
+
+    if(*menuStatus >=5 && *menuStatus <= 7){
+        Bouton Rouler = {{100, 600, 200, 50}, "Rouler", 10};
+        Bouton Tirer = {{400, 600, 200, 50}, "Tirer", 11};
+        Bouton Abandonner = {{700, 600, 600, 50}, "Abandonner", 0};
+
+        boutons[0] = Rouler;
+        boutons[1] = Tirer;
+        boutons[2] = Abandonner;
+
+        for (int i = 0; i < 3; ++i) {
+            drawBouton(ecran, boutons[i]);
+        }
+
+        if (*menuStatus == 5){};
+
+    }
     
 }
