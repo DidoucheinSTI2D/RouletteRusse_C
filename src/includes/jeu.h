@@ -1,5 +1,5 @@
-#define JEU_H
-#ifdef JEU_H
+#ifndef JEU_H
+	#define JEU_H
 
 #include <SDL/SDL.h>
 

@@ -6,19 +6,19 @@
 #include <SDL/SDL_mixer.h>
 
 #include "src/includes/jeu.h"
-#include "src/c/menu.c"
-
+#include "src/includes/affichage.h"
 
 const int largeur = 1400;
 const int hauteur = 1080;
 const char * titre = "Roulette Russe C";
 Jeu jeu;
 
-void affichage(SDL_Surface * ecran) {
+void affichageSDL(SDL_Surface * ecran) {
 	SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
 }
 
 int main(){
+    srand( time( NULL ) );
     SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
@@ -78,8 +78,8 @@ int main(){
                 }
             break;
         }
-        affichage(ecran);
-        menu(ecran, &menuStatus, boutons, nombreBouton, 1);
+        affichageSDL(ecran);
+        affichage(ecran, &menuStatus, boutons, nombreBouton, 1);
         SDL_Flip(ecran);
     }
 

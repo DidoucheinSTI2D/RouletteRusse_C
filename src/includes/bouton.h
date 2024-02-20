@@ -1,5 +1,5 @@
-#define BOUTON_H
-#ifdef BOUTON_H
+#ifndef BOUTON_H
+    #define BOUTON_H
 
 #include <SDL/SDL.h>
 

@@ -3,8 +3,9 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_mixer.h>
+
 #include "../includes/bouton.h"
-#include "roulette.c"
+#include "../includes/roulette.h"
 
 void drawBouton(SDL_Surface *ecran, Bouton bouton){
     SDL_Rect rect = bouton.rec;
@@ -28,11 +29,11 @@ void drawBouton(SDL_Surface *ecran, Bouton bouton){
 
     TTF_CloseFont(font);
     TTF_Quit(); 
-
 };
 
-void menu(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int boutonCount, int boucle) {
+void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int boutonCount, int boucle) {
 
+// ----------- PARTIE DU MENU -----------
     Bouton jouer = {{600, 330, 200, 50}, "Jouer", 1};
     Bouton couperSon = {{600, 430, 200, 50}, "Couper le son", 2};
     Bouton quitter = {{600, 530, 200, 50}, "Quitter", 3};
@@ -76,7 +77,8 @@ void menu(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int boutonCount
         for (int i = 0; i < 3; ++i) {
             drawBouton(ecran, boutons[i]);
         }
-    }
-    
+    } 
+
+// ----------- PARTIE DU JEU -----------
     
 }
