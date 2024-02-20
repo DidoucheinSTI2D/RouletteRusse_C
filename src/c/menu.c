@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
 #include "../includes/bouton.h"
+#include "roulette.c"
 
 void drawBouton(SDL_Surface *ecran, Bouton bouton){
     SDL_Rect rect = bouton.rec;
@@ -38,8 +40,10 @@ void menu(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int boutonCount
     boutons[0] = jouer;
     boutons[1] = couperSon;
     boutons[2] = quitter;
-
+    
+    
     if (*menuStatus == 0 || *menuStatus == 8 ){
+        Mix_ResumeMusic();
         for (int i = 0; i < 3; ++i) {
             drawBouton(ecran, boutons[i]);
         }
@@ -59,7 +63,19 @@ void menu(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int boutonCount
             drawBouton(ecran, boutons[i]);
         }
     } else if (*menuStatus == 2) {
+        Bouton jouer = {{600, 330, 200, 50}, "Jouer", 1};
+        Bouton remettreSon = {{600, 430, 200, 50}, "Remettre le son", 0};
+        Bouton quitter = {{600, 530, 200, 50}, "Quitter", 3};
 
+        boutons[0] = jouer;
+        boutons[1] = remettreSon;
+        boutons[2] = quitter;
+
+        Mix_PauseMusic();
+
+        for (int i = 0; i < 3; ++i) {
+            drawBouton(ecran, boutons[i]);
+        }
     }
     
     

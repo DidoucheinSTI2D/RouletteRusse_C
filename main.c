@@ -3,6 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <SDL/SDL_gfxPrimitives.h>
+#include <SDL/SDL_mixer.h>
 
 #include "src/includes/jeu.h"
 #include "src/c/menu.c"
@@ -14,11 +15,22 @@ const char * titre = "Roulette Russe C";
 Jeu jeu;
 
 void affichage(SDL_Surface * ecran) {
-	int x, y, i;
 	SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
 }
 
 int main(){
+    SDL_Init(SDL_INIT_AUDIO);
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+    Mix_Music *music = Mix_LoadMUS("/home/mehdi/Desktop/RouletteRusse_C/src/sound/music/Ninho_Menu.mp3");
+    if (!music) {
+        printf("Impossible de lancer la music : %s\n", Mix_GetError());
+    }
+
+    if (Mix_PlayMusic(music, -1) == -1) {
+        printf("Impossible de jouer la musique : %s\n", Mix_GetError());
+    }
+
     int boucle = 1;
     SDL_Surface * ecran = NULL;
     int menuStatus = 0; 
@@ -71,6 +83,8 @@ int main(){
         SDL_Flip(ecran);
     }
 
+    Mix_FreeMusic(music);
+    Mix_CloseAudio();
     SDL_Quit();
     return EXIT_SUCCESS;
 }
