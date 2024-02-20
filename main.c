@@ -22,7 +22,8 @@ int main(){
     int boucle = 1;
     SDL_Surface * ecran = NULL;
     int menuStatus = 0; 
-    Bouton buttons[3]; 
+    Bouton boutons[3]; 
+    int nombreBouton = 3;
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -44,6 +45,21 @@ int main(){
             case SDL_QUIT:
                 boucle = 0;
                 break;
+            case SDL_MOUSEBUTTONDOWN:
+                for (int i = 0; i < nombreBouton; ++i) {
+                    if (menuStatus == 1){
+                        nombreBouton = 4;
+                    } 
+                    if (event.button.x >= boutons[i].rec.x && event.button.x <= (boutons[i].rec.x + boutons[i].rec.w) &&
+                        event.button.y >= boutons[i].rec.y && event.button.y <= (boutons[i].rec.y + boutons[i].rec.h)) {
+                        menuStatus = boutons[i].nb;
+                        /// printf("Status actuel : %d", menuStatus); // Debug line
+                        if (menuStatus == 3){
+                            boucle = 0;
+                        }
+                    }
+                }
+                break;
             case SDL_KEYDOWN : 
                 if (event.key.keysym.sym == SDLK_ESCAPE){
                     boucle = 0;
@@ -51,7 +67,7 @@ int main(){
             break;
         }
         affichage(ecran);
-        menu(ecran, &menuStatus, buttons, 3);
+        menu(ecran, &menuStatus, boutons, nombreBouton, 1);
         SDL_Flip(ecran);
     }
 

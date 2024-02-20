@@ -4,10 +4,10 @@
 #include <SDL/SDL_ttf.h>
 #include "../includes/bouton.h"
 
-void drawBouton(SDL_Surface *screen, Bouton bouton){
+void drawBouton(SDL_Surface *ecran, Bouton bouton){
     SDL_Rect rect = bouton.rec;
-    Uint32 color = SDL_MapRGB(screen->format, 100, 100, 100); 
-    SDL_FillRect(screen, &rect, color);
+    Uint32 color = SDL_MapRGB(ecran->format, 100, 100, 100); 
+    SDL_FillRect(ecran, &rect, color);
 
     if (TTF_Init() == -1) {
         fprintf(stderr, "Erreur d'initialisation de TTF : %s\n", TTF_GetError());
@@ -15,13 +15,13 @@ void drawBouton(SDL_Surface *screen, Bouton bouton){
     }
     
     // ici faut remplacer par le location du font sinon ça marche pas, si vous êtes sur debian remplacer juste Mehdi et Desktop :p
-    TTF_Font *font = TTF_OpenFont("/home/mehdi/Desktop/RouletteRusseC/src/fonts/contrast.ttf", 24); 
+    TTF_Font *font = TTF_OpenFont("/home/mehdi/Desktop/RouletteRusse_C/src/fonts/contrast.ttf", 24); 
 
     SDL_Color textColor = {255, 10, 10}; 
 
     SDL_Surface *textSurface = TTF_RenderText_Solid(font, bouton.text, textColor);
     SDL_Rect textLocation = { rect.x + (rect.w - textSurface->w) / 2, rect.y + (rect.h - textSurface->h) / 2, 0, 0 };
-    SDL_BlitSurface(textSurface, NULL, screen, &textLocation);
+    SDL_BlitSurface(textSurface, NULL, ecran, &textLocation);
     SDL_FreeSurface(textSurface);
 
     TTF_CloseFont(font);
@@ -29,7 +29,7 @@ void drawBouton(SDL_Surface *screen, Bouton bouton){
 
 };
 
-void menu(SDL_Surface *screen, int *menuStatus, Bouton boutons[], int boutonCount) {
+void menu(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int boutonCount, int boucle) {
 
     Bouton jouer = {{600, 330, 200, 50}, "Jouer", 1};
     Bouton couperSon = {{600, 430, 200, 50}, "Couper le son", 2};
@@ -39,8 +39,27 @@ void menu(SDL_Surface *screen, int *menuStatus, Bouton boutons[], int boutonCoun
     boutons[1] = couperSon;
     boutons[2] = quitter;
 
-    for (int i = 0; i < boutonCount; ++i) {
-        drawBouton(screen, boutons[i]);
+    if (*menuStatus == 0 || *menuStatus == 8 ){
+        for (int i = 0; i < 3; ++i) {
+            drawBouton(ecran, boutons[i]);
+        }
+    } else if (*menuStatus == 1) {
+        // Difficulté mais tu peux aussi l'utiliser pour Solo / Multi lucas 
+        Bouton Facile = {{600, 330, 200, 50}, "Facile (1 balle)", 5};
+        Bouton Moyen = {{600, 430, 200, 50}, "Moyen (3 balles)", 6};
+        Bouton Difficile = {{400, 530, 600, 50}, "Niveau CC2 de M. Trancho (5 balles)", 7};
+        Bouton retourMenu = {{600, 630, 200, 50}, "J'ai peur (Menu)", 8};
+
+        boutons[0] = Facile;
+        boutons[1] = Moyen;
+        boutons[2] = Difficile;
+        boutons[3] = retourMenu;
+
+        for (int i = 0; i < boutonCount; ++i) {
+            drawBouton(ecran, boutons[i]);
+        }
+    } else if (*menuStatus == 2) {
+
     }
     
     

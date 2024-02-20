@@ -1,6 +1,6 @@
 # RouletteRusse_C
 
 Segmentation default (core dumped) count : 
-    Mehdi : 15
+    Mehdi : 22
     Lucas : 0
     Ahmed : 1
