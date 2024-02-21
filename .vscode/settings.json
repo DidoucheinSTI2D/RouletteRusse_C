@@ -2,6 +2,10 @@
     "files.associations": {
         "sdl.h": "c",
         "button.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "sdl_thread.h": "c",
+        "stdlib.h": "c",
+        "thread.h": "c",
+        "sdl_net.h": "c"
     }
 }

@@ -3,8 +3,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_net.h>
 #include <SDL/SDL_thread.h>
-
-#define MAX_PLAYERS 2
+#define MAX_PLAYERS 6
 
 
 int main (void){
@@ -20,7 +19,7 @@ int main (void){
         fprintf(stderr, "Error in SDLNet_ResolveHost: %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
     }
-    
+
     /* Affichage de l'adresse IP de la cible : */
     Uint32 intip = SDL_SwapBE32(ip.host);
     printf("Target IP is %s at %d.%d.%d.%d:%u\n", SDLNet_ResolveIP(&ip), intip >> 24, (intip >> 16) & 0xff,(intip >> 8) & 0xff, intip & 0xff, ip.port);
@@ -31,6 +30,19 @@ int main (void){
         fprintf(stderr, "Erreur SDLNet_TCP_Open : %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
     }
+    char choix;
+    while(choix != 'q'){
+        printf("Entrez votre choix (q pour quitter): ");
+        scanf(" %c", &choix);
+
+        if(SDLNet_TCP_Send(serveur, &choix, sizeof(choix)) < sizeof(choix)) {
+            fprintf(stderr, "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
+            // Gérer l'erreur d'envoi
+            break;
+        }
+    }
+
+    SDLNet_TCP_Close(serveur);
     SDLNet_Quit();
     return EXIT_SUCCESS;
 }

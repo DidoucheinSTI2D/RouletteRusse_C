@@ -4,7 +4,11 @@
 #include <SDL/SDL_net.h>
 #include <SDL/SDL_thread.h>
 
-#define MAX_PLAYERS 2
+#include "../includes/thread.h"
+#include "../includes/client.h"
+
+#define MAX_PLAYERS 6
+
 
 int main (void){
     if(SDLNet_Init() < 0) {
@@ -27,16 +31,28 @@ int main (void){
     }
 
     printf("Serveur en attente de connexion...\n");
-
+    int clientID = 0;
     TCPsocket client;
     /* En attente de clients : */
-    /* Lorsqu'un client cherche à se connecter, l'accepter : */
-    if((client = SDLNet_TCP_Accept(serveur)) == NULL) {
-    /* Si aucun client, attendre à nouveau. */
-        SDL_Delay(100);
-    }else{
-        /* Lancer un thread dédié au client : */
-        SDL_Thread * thread = SDL_CreateThread(processClient, client);
+    for(;;){
+        /* Lorsqu'un client cherche à se connecter, l'accepter : */
+        if((client = SDLNet_TCP_Accept(serveur)) != NULL) {
+            ClientInfo* clientInfo = (ClientInfo*)malloc(sizeof(ClientInfo));
+            if(clientInfo != NULL){
+                clientInfo->id = clientID++;
+                clientInfo->socket = client;
+                clientInfo->ip = *SDLNet_TCP_GetPeerAddress(client);
+                /* Lancer un thread dédié au client : */
+                SDL_Thread * thread = SDL_CreateThread(processClient, (void*)clientInfo);
+                if(thread == NULL){
+                    fprintf(stderr, "Could not create thread: %s\n", SDL_GetError());
+                    free(clientInfo);
+                }
+            }
+        } else {
+            SDL_Delay(100);
+        }
+            
     }
     SDLNet_Quit();
     return EXIT_SUCCESS;
