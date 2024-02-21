@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-c -Wall `sdl-config --cflags` `pkg-config --cflags SDL_ttf`
-LDFLAGS=-lSDL -lSDL_net `sdl-config --libs` `pkg-config --libs SDL_ttf`
+LDFLAGS=-lSDL -lSDL_net -lSDL_mixer `sdl-config --libs` `pkg-config --libs SDL_ttf`
 SOURCES_MAIN=main.c
 OBJECTS_MAIN=$(SOURCES_MAIN:.c=.o)
 EXECUTABLE_MAIN=prog
