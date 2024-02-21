@@ -1,15 +1,16 @@
 CC=gcc
 CFLAGS=-c -Wall `sdl-config --cflags` `pkg-config --cflags SDL_ttf`
 LDFLAGS=-lSDL -lSDL_net -lSDL_mixer `sdl-config --libs` `pkg-config --libs SDL_ttf`
-SOURCES_MAIN=main.c
+
+SOURCES_MAIN=main.c src/c/affichage.c src/c/roulette.c
 OBJECTS_MAIN=$(SOURCES_MAIN:.c=.o)
 EXECUTABLE_MAIN=prog
 
-SOURCES_CLIENT=src/NET/client.c
+SOURCES_CLIENT=src/NET/client.c src/c/affichage.c src/c/roulette.c
 OBJECTS_CLIENT=$(SOURCES_CLIENT:.c=.o)
 EXECUTABLE_CLIENT=client
 
-SOURCES_SERVER=src/NET/serveur.c
+SOURCES_SERVER=src/NET/serveur.c src/c/affichage.c src/c/roulette.c
 OBJECTS_SERVER=$(SOURCES_SERVER:.c=.o)
 EXECUTABLE_SERVER=serveur
 
@@ -28,4 +29,4 @@ $(EXECUTABLE_SERVER): $(OBJECTS_SERVER)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	rm -rf *o NET/*o $(EXECUTABLE_MAIN) $(EXECUTABLE_CLIENT) $(EXECUTABLE_SERVER)
+	rm -rf *o src/NET/*o src/c/*o $(EXECUTABLE_MAIN) $(EXECUTABLE_CLIENT) $(EXECUTABLE_SERVER)
