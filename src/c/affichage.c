@@ -53,7 +53,7 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
         Bouton Facile = {{600, 330, 200, 50}, "Facile (1 balle)", 5};
         Bouton Moyen = {{600, 430, 200, 50}, "Moyen (3 balles)", 6};
         Bouton Difficile = {{400, 530, 600, 50}, "Niveau CC2 de M. Trancho (5 balles)", 7};
-        Bouton retourMenu = {{600, 630, 200, 50}, "J'ai peur (Menu)", 8};
+        Bouton retourMenu = {{600, 630, 200, 50}, "J'ai peur (Menu)", 0};
 
         boutons[0] = Facile;
         boutons[1] = Moyen;

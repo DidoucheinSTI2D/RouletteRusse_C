@@ -38,6 +38,8 @@ int main(){
     int menuStatus = 0; 
     Bouton boutons[3]; 
     int nombreBouton = 3;
+    int cran;
+    int chargeur[6];
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -80,7 +82,12 @@ int main(){
                         }
 
                         if (menuStatus == 10){
-                            roulerRoulette();
+                            cran = roulerRoulette();
+                        }
+
+                        if (menuStatus == 11){
+                            int resultat = tir(chargeur, cran);
+                            victoireDefaite(resultat);
                         }
                     }
                 }

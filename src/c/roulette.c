@@ -7,6 +7,7 @@
 void generationPartie(int balles){
     int chargeur[6];
     int position, tir;
+    int cran;
 
     for (int i = 0; i < balles;i++){
         do {
@@ -15,6 +16,7 @@ void generationPartie(int balles){
 
         chargeur[position] = 1;
     }
+    cran = roulerRoulette();
 
     // Pour débug
     printf("Les balles sont dans les positions suivantes : ");
@@ -39,8 +41,8 @@ int tir(int chargeur[6], int cran) {
 
 void victoireDefaite(int resultat){
     if (resultat) {
-        printf("Malheureusement, vous avez perdu.\n");
+        printf("Malheureusement, vous avez perdu.\n");   
     } else {
-        printf("Félicitations, vous avez survécu !\n");
+        printf("Félicitations, vous avez survécu !\n"); 
     }
 }
