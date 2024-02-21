@@ -5,25 +5,36 @@
 #include "../includes/roulette.h"
 
 void generationPartie(int balles){
-    int resultat = roulerRoulette(balles);
-    victoireDefaite(resultat);
-}
+    int chargeur[6];
+    int position, tir;
 
-int roulerRoulette(int balles){
-    int positionBalle = rand() % 6 + 1;
-    printf("Position de la première balle : %d\n", positionBalle);
-    int tir = rand() % 6 + 1; 
-    printf("Vous avez tiré le numéro : %d\n", tir);
+    for (int i = 0; i < balles;i++){
+        do {
+            position = rand() % 6;
+        } while (chargeur[position] == 1);
 
-    int touche = 0;
-    for (int i = 0; i < balles; i++) {
-        if (tir == ((positionBalle + 2*i) % 6) + 1) {
-            touche = 1;
-            break;
-        }
+        chargeur[position] = 1;
     }
 
-    return touche;
+    // Pour débug
+    printf("Les balles sont dans les positions suivantes : ");
+    for (int i = 0; i < 6; i++){
+        if (chargeur[i] == 1) {
+            printf("%d ", i + 1); 
+        }
+    }
+    printf("\n"); 
+}
+
+int roulerRoulette() {
+    int cran = rand() % 6; 
+    // pour debug
+    printf("Cran sélectionné : %d\n", cran + 1); 
+    return cran;
+}
+
+int tir(int chargeur[6], int cran) {
+    return chargeur[cran];
 }
 
 void victoireDefaite(int resultat){

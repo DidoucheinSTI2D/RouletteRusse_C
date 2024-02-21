@@ -8,6 +8,7 @@
 
 #include "src/includes/jeu.h"
 #include "src/includes/affichage.h"
+#include "src/includes/roulette.h"
 
 const int largeur = 1400;
 const int hauteur = 800;
@@ -70,6 +71,17 @@ int main(){
                         if (menuStatus == 3){
                             boucle = 0;
                         }
+                        if (menuStatus == 5){
+                            generationPartie(1);
+                        } else if (menuStatus == 6){
+                            generationPartie(3);
+                        } else if (menuStatus == 7){
+                            generationPartie(5);
+                        }
+
+                        if (menuStatus == 10){
+                            roulerRoulette();
+                        }
                     }
                 }
                 break;
@@ -77,7 +89,7 @@ int main(){
                 if (event.key.keysym.sym == SDLK_ESCAPE){
                     boucle = 0;
                 }
-            break;
+                break;
         }
         affichageSDL(ecran);
         affichage(ecran, &menuStatus, boutons, nombreBouton, 1);

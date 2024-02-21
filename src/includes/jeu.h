@@ -1,8 +1,6 @@
 #ifndef JEU_H
 	#define JEU_H
 
-#include <SDL/SDL.h>
-
 typedef struct Jeu Jeu;
 struct Jeu {
 	int width;
