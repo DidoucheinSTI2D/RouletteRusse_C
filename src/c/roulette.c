@@ -23,22 +23,15 @@ void generationPartie(int balles, int chargeur[6], char *etatJeu) {
         chargeur[position] = 1;
     }
 
-    // Création de la chaîne d'état de jeu
-    strcpy(etatJeu, "Etat du jeu: Chargeur: "); // Début de l'état du jeu
+    // Pour débug
+    printf("Chargeur : ");
     for (int i = 0; i < 6; i++) {
-        char temp[4]; // Assez grand pour "0 " ou "1 " et le caractère nul
-        sprintf(temp, "%d ", chargeur[i]);
-        strcat(etatJeu, temp); // Ajout de l'état de chaque position du chargeur
-    }
-
-    // Ajout d'informations supplémentaires si nécessaire
-    // Par exemple, les positions occupées par les balles pour faciliter le débogage ou l'affichage côté client
-    strcat(etatJeu, "\nPositions des balles: ");
+        printf("%d ", chargeur[i]);
+   }
+    printf("\n Les balles sont dans les positions suivantes : ");
     for (int i = 0; i < 6; i++) {
         if (chargeur[i] == 1) {
-            char tempPos[4]; // Pour numéro de position + espace
-            sprintf(tempPos, "%d ", i + 1);
-            strcat(etatJeu, tempPos);
+            printf("%d ", i + 1);
         }
     }
     printf("\n");
@@ -57,7 +50,7 @@ int tir(int chargeur[6], int cran) {
 }
 
 void victoireDefaite(int resultat){
-    printf("%d ", resultat); // debug line
+    printf("%d", resultat);
     if (resultat) {
         printf("Malheureusement, vous avez perdu.\n"); 
     } else {

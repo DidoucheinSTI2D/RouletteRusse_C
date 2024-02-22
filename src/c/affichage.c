@@ -92,17 +92,9 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
             drawBouton(ecran, boutons[i]);
         }
     }
-
+    /*
     if(*menuStatus == 12) {
         Bouton retourMenu = {{50, 700, 200, 50}, "Retour", 0};
-
-        //lance l'éxecutable serveur
-        /*int result = system("./serveur");
-        if (result == -1) {
-            fprintf(stderr, "Erreur lors du lancement du serveur\n");
-        }else {
-            printf("Sereur lancé avec succès\n");
-        }*/
 
         boutons[0] = retourMenu;
         
@@ -110,14 +102,14 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
     }
     if(*menuStatus == 13) {
         Bouton retourMenu = {{50, 700, 200, 50}, "Retour", 0};
-        
+
         boutons[0] = retourMenu;
         
         drawBouton(ecran, boutons[0]);
-    }
+    }*/
 // ----------- PARTIE DU JEU -----------
 
-    if(*menuStatus >=5 && *menuStatus <= 11){
+    if(*menuStatus >=5 && *menuStatus <= 13){
         Bouton Rouler = {{100, 600, 200, 50}, "Rouler", 10};
         Bouton Tirer = {{400, 600, 200, 50}, "Tirer", 11};
         Bouton Abandonner = {{700, 600, 600, 50}, "Abandonner", 0};
