@@ -5,10 +5,14 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_mixer.h>
 #include <time.h>
+#include <SDL/SDL_thread.h>
 
 #include "src/includes/jeu.h"
 #include "src/includes/affichage.h"
 #include "src/includes/roulette.h"
+
+#include "src/NET/serveur.c"
+#include "src/NET/client.c"
 
 const int largeur = 1400;
 const int hauteur = 800;
@@ -24,7 +28,7 @@ int main(){
     SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    Mix_Music *music = Mix_LoadMUS("/home/mehdi/Desktop/RouletteRusse_C/src/sound/music/Ninho_Menu.mp3");
+    Mix_Music *music = Mix_LoadMUS("/home/lucas/Bureau/GitHub_Russian/RouletteRusse_C/src/sound/music/Ninho_Menu.mp3");
     if (!music) {
         printf("Impossible de lancer la music : %s\n", Mix_GetError());
     }
@@ -89,7 +93,21 @@ int main(){
                             int resultat = tir(chargeur, cran);
                             victoireDefaite(resultat);
                         }
-                    }
+                        //code Lucas
+                        if (menuStatus == 12){ //Serveur/Héberger
+                            SDL_Thread *serverThread = SDL_CreateThread(serveurRun, NULL);
+                            if (serverThread == NULL) {
+                                fprintf(stderr, "Failed to create server thread : %s\n", SDL_GetError());
+                            }
+                        }
+
+                        if (menuStatus == 13){ //Client/rejoindre
+                            SDL_Thread *clientThread = SDL_CreateThread(clientRun, NULL);
+                            if (clientThread == NULL) {
+                                fprintf(stderr, "Failed to create client thread : %s\n", SDL_GetError()); 
+                            }
+                        }
+                    }   
                 }
                 break;
             case SDL_KEYDOWN : 

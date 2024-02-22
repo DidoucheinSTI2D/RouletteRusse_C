@@ -7,6 +7,9 @@
 #include "../includes/bouton.h"
 #include "../includes/roulette.h"
 
+
+#define MENU_MULTIJOUER 4 
+
 void drawBouton(SDL_Surface *ecran, Bouton bouton){
     SDL_Rect rect = bouton.rec;
     Uint32 color = SDL_MapRGB(ecran->format, 100, 100, 100); 
@@ -18,7 +21,7 @@ void drawBouton(SDL_Surface *ecran, Bouton bouton){
     }
     
     // ici faut remplacer par le location du font sinon ça marche pas, si vous êtes sur debian remplacer juste Mehdi et Desktop :p
-    TTF_Font *font = TTF_OpenFont("/home/mehdi/Desktop/RouletteRusse_C/src/fonts/contrast.ttf", 24); 
+    TTF_Font *font = TTF_OpenFont("/home/lucas/Bureau/GitHub_Russian/RouletteRusse_C/src/fonts/contrast.ttf", 24); 
 
     SDL_Color textColor = {255, 10, 10}; 
 
@@ -35,17 +38,18 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
 
 // ----------- PARTIE DU MENU -----------
     Bouton jouer = {{600, 330, 200, 50}, "Jouer", 1};
+    Bouton multijoueur = {{600, 380, 200, 50}, "Multijoueur", MENU_MULTIJOUER}; // Nouveau bouton
     Bouton couperSon = {{600, 430, 200, 50}, "Couper le son", 2};
-    Bouton quitter = {{600, 530, 200, 50}, "Quitter", 3};
+    Bouton quitter = {{600, 480, 200, 50}, "Quitter", 3};
 
     boutons[0] = jouer;
-    boutons[1] = couperSon;
-    boutons[2] = quitter;
-    
+    boutons[1] = multijoueur; // Ajout du bouton multijoueur
+    boutons[2] = couperSon;
+    boutons[3] = quitter;
     
     if (*menuStatus == 0 || *menuStatus == 8 ){
         Mix_ResumeMusic();
-        for (int i = 0; i < 3; ++i) {
+        for (int i = 0; i < 4; ++i) {
             drawBouton(ecran, boutons[i]);
         }
     } else if (*menuStatus == 1) {
@@ -76,9 +80,41 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
 
         for (int i = 0; i < 3; ++i) {
             drawBouton(ecran, boutons[i]);
-        }
-    } 
+        } //Code Lucas
+    }  else if (*menuStatus == MENU_MULTIJOUER) {
+        Bouton heberger = {{600, 330, 200, 50}, "Heberger une partie", 12};
+        Bouton rejoindre = {{600, 430, 200, 50}, "Rejoindre une partie", 13};
 
+        boutons[0] = heberger;
+        boutons[1] = rejoindre;
+
+        for (int i = 0; i < 2; i++) {
+            drawBouton(ecran, boutons[i]);
+        }
+    }
+
+    if(*menuStatus == 12) {
+        Bouton retourMenu = {{50, 700, 200, 50}, "Retour", 0};
+
+        //lance l'éxecutable serveur
+        /*int result = system("./serveur");
+        if (result == -1) {
+            fprintf(stderr, "Erreur lors du lancement du serveur\n");
+        }else {
+            printf("Sereur lancé avec succès\n");
+        }*/
+
+        boutons[0] = retourMenu;
+        
+        drawBouton(ecran, boutons[0]);
+    }
+    if(*menuStatus == 13) {
+        Bouton retourMenu = {{50, 700, 200, 50}, "Retour", 0};
+        
+        boutons[0] = retourMenu;
+        
+        drawBouton(ecran, boutons[0]);
+    }
 // ----------- PARTIE DU JEU -----------
 
     if(*menuStatus >=5 && *menuStatus <= 11){

@@ -6,7 +6,7 @@
 #define MAX_PLAYERS 6
 
 
-int main (void){
+int clientRun (void *data){
     if(SDLNet_Init() < 0) {
         fprintf(stderr, "Error in SDLNet_Init: %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
@@ -44,6 +44,6 @@ int main (void){
 
     SDLNet_TCP_Close(serveur);
     SDLNet_Quit();
-    return EXIT_SUCCESS;
+    return 0;
 }
 
