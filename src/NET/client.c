@@ -5,40 +5,55 @@
 #include <SDL/SDL_thread.h>
 #define MAX_PLAYERS 6
 
+#include "../includes/roulette.h"
 
-int clientRun (void *data){
-    if(SDLNet_Init() < 0) {
-        fprintf(stderr, "Error in SDLNet_Init: %s\n", SDLNet_GetError());
+
+int clientRun(void *data) {
+    if (SDLNet_Init() < 0) {
+        fprintf(stderr, "SDLNet_Init Error: %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
     }
-    /* Instructions */
+
     IPaddress ip;
-    /* Ciblage d'une machine distante au port 1337 : */
-    /* Remplacer "localhost" par le nom de la machine */
-    if(SDLNet_ResolveHost(&ip, "localhost", 1337) != 0) {
-        fprintf(stderr, "Error in SDLNet_ResolveHost: %s\n", SDLNet_GetError());
+    if (SDLNet_ResolveHost(&ip, "localhost", 1337) != 0) {
+        fprintf(stderr, "SDLNet_ResolveHost Error: %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
     }
 
-    /* Affichage de l'adresse IP de la cible : */
-    Uint32 intip = SDL_SwapBE32(ip.host);
-    printf("Target IP is %s at %d.%d.%d.%d:%u\n", SDLNet_ResolveIP(&ip), intip >> 24, (intip >> 16) & 0xff,(intip >> 8) & 0xff, intip & 0xff, ip.port);
-    
     TCPsocket serveur;
-    /* Connexion à la machine distante : */
-    if((serveur = SDLNet_TCP_Open(&ip)) == NULL) {
-        fprintf(stderr, "Erreur SDLNet_TCP_Open : %s\n", SDLNet_GetError());
+    if ((serveur = SDLNet_TCP_Open(&ip)) == NULL) {
+        fprintf(stderr, "SDLNet_TCP_Open Error: %s\n", SDLNet_GetError());
         exit(EXIT_FAILURE);
     }
-    char choix;
-    while(choix != 'q'){
-        printf("Entrez votre choix (q pour quitter): ");
-        scanf(" %c", &choix);
 
-        if(SDLNet_TCP_Send(serveur, &choix, sizeof(choix)) < sizeof(choix)) {
-            fprintf(stderr, "SDLNet_TCP_Send: %s\n", SDLNet_GetError());
-            // Gérer l'erreur d'envoi
-            break;
+    char serverMessage[1024];
+    int quit = 0;
+    while (!quit) {
+        memset(serverMessage, 0, sizeof(serverMessage)); // Initialisation du buffer
+        if (SDLNet_TCP_Recv(serveur, serverMessage, 1024) > 0) {
+            printf("État du jeu reçu: %s\n", serverMessage);
+
+            // Traitement de l'état du jeu
+            char *positionsPart = strstr(serverMessage, "Positions: ");
+            char *cranPart = strstr(serverMessage, "Cran: ");
+
+            if (positionsPart != NULL && cranPart != NULL) {
+                printf("Positions des balles: ");
+                char *positionsStart = positionsPart + strlen("Positions: ");
+                char *positionsEnd = cranPart;
+                while (positionsStart < positionsEnd) {
+                    printf("%c ", *positionsStart);
+                    positionsStart += 2; // On saute l'espace après chaque position
+                }
+
+                int cran;
+                sscanf(cranPart, "Cran: %d", &cran);
+                printf("\nPosition initiale du cran: %d\n", cran);
+            }
+        } else {
+            // Gestion d'erreur ou déconnexion
+            printf("Erreur de réception ou serveur déconnecté.\n");
+            quit = 1;
         }
     }
 
@@ -46,4 +61,3 @@ int clientRun (void *data){
     SDLNet_Quit();
     return 0;
 }
-

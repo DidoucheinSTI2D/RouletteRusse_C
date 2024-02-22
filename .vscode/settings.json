@@ -4,6 +4,10 @@
         "button.h": "c",
         "stdio.h": "c",
         "sdl_ttf.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "jeu.h": "c",
+        "roulette.h": "c",
+        "sdl_thread.h": "c",
+        "sdl_net.h": "c"
     }
 }

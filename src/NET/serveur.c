@@ -6,8 +6,8 @@
 
 #include "../includes/thread.h"
 #include "../includes/client.h"
+#include "../includes/roulette.h"
 #define MAX_PLAYERS 6
-
 
 int serveurRun (void *data){
     if(SDLNet_Init() < 0) {
@@ -30,29 +30,21 @@ int serveurRun (void *data){
     }
 
     printf("Serveur en attente de connexion...\n");
-    int clientID = 0;
-    TCPsocket client;
-    /* En attente de clients : */
-    for(;;){
-        /* Lorsqu'un client cherche à se connecter, l'accepter : */
-        if((client = SDLNet_TCP_Accept(serveur)) != NULL) {
-            ClientInfo* clientInfo = (ClientInfo*)malloc(sizeof(ClientInfo));
-            if(clientInfo != NULL){
-                clientInfo->id = clientID++;
-                clientInfo->socket = client;
-                clientInfo->ip = *SDLNet_TCP_GetPeerAddress(client);
-                /* Lancer un thread dédié au client : */
-                SDL_Thread * thread = SDL_CreateThread(processClient, (void*)clientInfo);
-                if(thread == NULL){
-                    fprintf(stderr, "Could not create thread: %s\n", SDL_GetError());
-                    free(clientInfo);
-                }
-            }
+    
+    int chargeur[6];
+    char etatJeu[256];
+    // Générer l'état de la partie ici avant d'accepter les clients
+    generationPartie(1, chargeur, etatJeu);
+    // Boucle principale du serveur pour accepter les clients
+    while(1){
+        TCPsocket client = SDLNet_TCP_Accept(serveur);
+        if(client != NULL) {
+            SDLNet_TCP_Send(client, etatJeu, strlen(etatJeu) + 1); // Envoie l'état au client
         } else {
-            SDL_Delay(100);
+            SDL_Delay(100); // Pour éviter une utilisation élevée du CPU
         }
-            
     }
+
     SDLNet_TCP_Close(serveur);
     SDLNet_Quit();
     return 0;

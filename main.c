@@ -42,8 +42,9 @@ int main(){
     int menuStatus = 0; 
     Bouton boutons[3]; 
     int nombreBouton = 3;
-    int cran;
     int chargeur[6];
+    
+    char etatJeu[256];
 
     if (SDL_Init(SDL_INIT_VIDEO) == -1) {
         fprintf(stderr, "Erreur d'initialisation de la SDL : %s\n", SDL_GetError());
@@ -58,6 +59,9 @@ int main(){
 
     SDL_WM_SetCaption(titre, NULL);
     SDL_Event event;
+
+    int cran;
+
 
     while(boucle){
         SDL_WaitEvent(&event);
@@ -78,11 +82,14 @@ int main(){
                             boucle = 0;
                         }
                         if (menuStatus == 5){
-                            generationPartie(1);
+                            generationPartie(1, chargeur, etatJeu);
+                            roulerRoulette();
                         } else if (menuStatus == 6){
-                            generationPartie(3);
+                            generationPartie(3, chargeur, etatJeu);
+                            roulerRoulette();
                         } else if (menuStatus == 7){
-                            generationPartie(5);
+                            generationPartie(5, chargeur, etatJeu);
+                            roulerRoulette();
                         }
 
                         if (menuStatus == 10){
@@ -90,8 +97,11 @@ int main(){
                         }
 
                         if (menuStatus == 11){
-                            int resultat = tir(chargeur, cran);
-                            victoireDefaite(resultat);
+                            if (cran < 0 || cran >= 6) { //debug
+                                printf("Erreur: L'indice cran est hors limites.\n");
+                            } else {
+                                victoireDefaite(tir(chargeur, cran));
+                            }
                         }
                         //code Lucas
                         if (menuStatus == 12){ //Serveur/Héberger

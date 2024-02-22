@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-c -Wall `sdl-config --cflags` `pkg-config --cflags SDL_ttf`
+CFLAGS=-c -g -Wall `sdl-config --cflags` `pkg-config --cflags SDL_ttf`
 LDFLAGS=-lSDL -lSDL_net -lSDL_mixer `sdl-config --libs` `pkg-config --libs SDL_ttf`
 
 SOURCES_MAIN=main.c src/c/affichage.c src/c/roulette.c
