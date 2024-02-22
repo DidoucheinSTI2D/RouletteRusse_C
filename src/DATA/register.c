@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <mysql/mysql.h>
+#include "register.h"
 
-#define SERVER "192.168.1.124"
-#define USER "user"
-#define PASSWORD "password"
-#define DATABASE "game"
 #define QUERY "INSERT INTO users (username) VALUES (?)"
 
 int main() {
@@ -40,15 +37,10 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    char *name;
+    char *name = malloc(sizeof(char));
 
     printf("Entrez votre nom d'utilisateur : ");
     scanf("%s", name);
-
-    if (strlen(name) > 15) {
-        printf("Nom d'utilisateur trop long\n");
-        exit(EXIT_FAILURE);
-    }
 
     size_t name_length = strlen(name);
     memset(bind, 0, sizeof(bind));
@@ -71,6 +63,8 @@ int main() {
         mysql_close(conn);
         exit(EXIT_FAILURE);
     }
+
+    mysql_stmt_free_result(stmt);
 
     mysql_stmt_close(stmt);
     mysql_close(conn);
