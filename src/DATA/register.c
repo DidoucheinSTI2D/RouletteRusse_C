@@ -20,14 +20,14 @@ int main()
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         fprintf(stderr, "Impossible d'initialiser SDL : %s\n", SDL_GetError());
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     if (TTF_Init() != 0)
     {
         fprintf(stderr, "Impossible d'initialiser SDL_ttf : %s\n", TTF_GetError());
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     SDL_Surface *screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 0, SDL_HWSURFACE | SDL_DOUBLEBUF);
@@ -36,7 +36,7 @@ int main()
         fprintf(stderr, "Erreur lors de la création de la fenêtre SDL : %s\n", SDL_GetError());
         TTF_Quit();
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     MYSQL *conn;
@@ -49,7 +49,7 @@ int main()
         fprintf(stderr, "Erreur d'initialisation MySQL\n");
         TTF_Quit();
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     if (mysql_real_connect(conn, SERVER, USER, PASSWORD, DATABASE, 3306, NULL, 0) == NULL)
@@ -58,7 +58,7 @@ int main()
         mysql_close(conn);
         TTF_Quit();
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     stmt = mysql_stmt_init(conn);
@@ -68,7 +68,7 @@ int main()
         mysql_close(conn);
         TTF_Quit();
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     if (mysql_stmt_prepare(stmt, QUERY, strlen(QUERY)))
@@ -78,10 +78,10 @@ int main()
         mysql_close(conn);
         TTF_Quit();
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
-    TTF_Font *font = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf", 24); // Remplacer "yourfont.ttf" par le chemin de votre fichier de police
+    TTF_Font *font = TTF_OpenFont("/usr/share/fonts/truetype/ubuntu/Ubuntu-C.ttf", 24);
     if (!font)
     {
         fprintf(stderr, "Impossible de charger la police : %s\n", TTF_GetError());
@@ -89,7 +89,7 @@ int main()
         mysql_close(conn);
         TTF_Quit();
         SDL_Quit();
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     char name[256] = "";
@@ -123,8 +123,8 @@ int main()
                 if (event.button.button == SDL_BUTTON_LEFT &&
                     event.button.x >= SCREEN_WIDTH / 2 - BUTTON_WIDTH / 2 &&
                     event.button.x <= SCREEN_WIDTH / 2 + BUTTON_WIDTH / 2 &&
-                    event.button.y >= SCREEN_HEIGHT / 2 - BUTTON_HEIGHT / 2 &&
-                    event.button.y <= SCREEN_HEIGHT / 2 + BUTTON_HEIGHT / 2)
+                    event.button.y >= SCREEN_HEIGHT / 2 + TEXTBOX_HEIGHT / 2 + 10 &&
+                    event.button.y <= SCREEN_HEIGHT / 2 + TEXTBOX_HEIGHT / 2 + 10 + BUTTON_HEIGHT)
                 {
                     size_t name_length = strlen(name);
                     memset(bind, 0, sizeof(bind));
@@ -141,7 +141,7 @@ int main()
                         mysql_close(conn);
                         TTF_Quit();
                         SDL_Quit();
-                        return EXIT_FAILURE;
+                        exit(EXIT_FAILURE);
                     }
 
                     if (mysql_stmt_execute(stmt))
@@ -151,10 +151,11 @@ int main()
                         mysql_close(conn);
                         TTF_Quit();
                         SDL_Quit();
-                        return EXIT_FAILURE;
+                        exit(EXIT_FAILURE);
                     }
 
                     printf("Utilisateur ajouté avec succès : %s\n", name);
+                    quit = 1;
                 }
                 break;
             }
@@ -174,7 +175,7 @@ int main()
                 mysql_close(conn);
                 TTF_Quit();
                 SDL_Quit();
-                return EXIT_FAILURE;
+                exit(EXIT_FAILURE);
             }
 
             if (TEXTBOX_WIDTH < textBoxSurface->w)
@@ -187,7 +188,7 @@ int main()
                 mysql_close(conn);
                 TTF_Quit();
                 SDL_Quit();
-                return EXIT_FAILURE;
+                exit(EXIT_FAILURE);
             }
 
             SDL_Rect textBoxRect = {SCREEN_WIDTH / 2 - textBoxSurface->w / 2, SCREEN_HEIGHT / 2 - TEXTBOX_HEIGHT / 2, TEXTBOX_WIDTH, TEXTBOX_HEIGHT};
