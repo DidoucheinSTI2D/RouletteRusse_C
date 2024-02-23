@@ -28,7 +28,7 @@ int main(){
     SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    Mix_Music *music = Mix_LoadMUS("/home/mehdi/Desktop/New Folder/RouletteRusse_C/src/sound/music/Dalida.mp3");
+    Mix_Music *music = Mix_LoadMUS("/home/lucas/Bureau/New Folder/RouletteRusse_C_Mehdi/src/sound/music/Dalida.mp3");
     if (!music) {
         printf("Impossible de lancer la music : %s\n", Mix_GetError());
     }

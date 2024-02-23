@@ -21,7 +21,7 @@ void drawBouton(SDL_Surface *ecran, Bouton bouton){
     }
     
     // ici faut remplacer par le location du font sinon ça marche pas, si vous êtes sur debian remplacer juste Mehdi et Desktop :p
-    TTF_Font *font = TTF_OpenFont("/home/mehdi/Desktop/New Folder/RouletteRusse_C/src/fonts/contrast.ttf", 24); 
+    TTF_Font *font = TTF_OpenFont("/home/lucas/Bureau/RouletteRusse_C_Mehdi/src/fonts/contrast.ttf", 24); 
 
     SDL_Color textColor = {255, 10, 10}; 
 

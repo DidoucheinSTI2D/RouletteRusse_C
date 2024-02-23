@@ -39,21 +39,23 @@ int serveurRun (void *data){
     while(1){
         TCPsocket client = SDLNet_TCP_Accept(serveur);
         if(client != NULL) {
-            char* messageConnexion = "Connexion etablie avec succes \n";
+            char* messageConnexion = "Connexion établie avec succès\n";
             SDLNet_TCP_Send(client, messageConnexion, strlen(messageConnexion) + 1); // +1 pour inclure le caractère null de fin de chaîne
-            SDLNet_TCP_Send(client, etatJeu, strlen(etatJeu) + 1); // Envoie l'état au client
-
-            // Simulez la génération des résultats de roulette et de victoire/défaite
+        
+            // Simuler la génération du résultat de la roulette
             int cran = roulerRoulette();
-            int victoire = tir(chargeur, cran);              
-            char resultatRoulette[256];
-
-            // Récupérer le message de victoire ou défaite
-            const char* messageVictoire = victoireDefaite(victoire);
-
-            sprintf(resultatRoulette,"Cran sélectionné: %d\n%s", cran + 1, messageVictoire);
-            SDLNet_TCP_Send(client, resultatRoulette, strlen(resultatRoulette) + 1);
-
+            int resultat = tir(chargeur, cran);
+        
+            // Construire le message de résultat
+            char messageResultat[256];
+            if (resultat == 1) {
+                sprintf(messageResultat, "Vous avez gagné !\n");
+            } else {
+                sprintf(messageResultat, "Vous avez perdu.\n");
+            }
+    
+            // Envoyer le message de résultat au client
+            SDLNet_TCP_Send(client, messageResultat, strlen(messageResultat) + 1);
         } else {
             SDL_Delay(100); // Pour éviter une utilisation élevée du CPU
         }
