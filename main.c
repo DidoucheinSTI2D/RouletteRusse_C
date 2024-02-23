@@ -28,7 +28,7 @@ int main(){
     SDL_Init(SDL_INIT_AUDIO);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-    Mix_Music *music = Mix_LoadMUS("/home/lucas/Bureau/GitHub_Russian/RouletteRusse_C/src/sound/music/Ninho_Menu.mp3");
+    Mix_Music *music = Mix_LoadMUS("/home/mehdi/Desktop/New Folder/RouletteRusse_C/src/sound/music/Ninho_Menu.mp3");
     if (!music) {
         printf("Impossible de lancer la music : %s\n", Mix_GetError());
     }
@@ -61,6 +61,7 @@ int main(){
     SDL_Event event;
 
     int cran;
+    int statusPartie;
 
 
     while(boucle){
@@ -100,9 +101,15 @@ int main(){
                             if (cran < 0 || cran >= 6) { //debug
                                 printf("Erreur: L'indice cran est hors limites.\n");
                             } else {
+                                statusPartie = victoireOuDefaite(tir(chargeur, cran));
                                 const char* message = victoireDefaite(tir(chargeur, cran));
                                 printf("%s", message);                                
                             }
+                        }
+                        if (statusPartie == 1){
+                            menuStatus = 14;
+                        } else if (statusPartie == 0){
+                            menuStatus = 15;
                         }
                         //code Lucas
                         if (menuStatus == 12){ //Serveur/Héberger
@@ -118,7 +125,7 @@ int main(){
                                 fprintf(stderr, "Failed to create client thread : %s\n", SDL_GetError()); 
                             }
                         }
-                    }   
+                    }  
                 }
                 break;
             case SDL_KEYDOWN : 

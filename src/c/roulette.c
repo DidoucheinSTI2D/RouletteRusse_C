@@ -58,3 +58,11 @@ const char* victoireDefaite(int resultat){
     }
     return message;
 }
+
+int victoireOuDefaite(int resultat){
+    if (resultat) {
+        return 1;
+    } else {
+        return 0;
+    }
+}

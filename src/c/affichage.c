@@ -21,7 +21,7 @@ void drawBouton(SDL_Surface *ecran, Bouton bouton){
     }
     
     // ici faut remplacer par le location du font sinon ça marche pas, si vous êtes sur debian remplacer juste Mehdi et Desktop :p
-    TTF_Font *font = TTF_OpenFont("/home/lucas/Bureau/GitHub_Russian/RouletteRusse_C/src/fonts/contrast.ttf", 24); 
+    TTF_Font *font = TTF_OpenFont("/home/mehdi/Desktop/New Folder/RouletteRusse_C/src/fonts/contrast.ttf", 24); 
 
     SDL_Color textColor = {255, 10, 10}; 
 
@@ -122,6 +122,30 @@ void affichage(SDL_Surface *ecran, int *menuStatus, Bouton boutons[], int bouton
             drawBouton(ecran, boutons[i]);
         }
 
+    }
+
+    if (*menuStatus == 14){
+        Bouton Defaite = {{600, 320, 200, 50}, "VOUS AVEZ PERDU", 0};
+        Bouton Menu = {{600, 500, 200, 50}, "Fermer le jeu", 0};
+
+        boutons[0] = Defaite;
+        boutons[1] = Menu;
+
+        for (int i = 0; i < 2; ++i) {
+            drawBouton(ecran, boutons[i]);
+        }
+    }
+
+    if (*menuStatus == 15){
+        Bouton Defaite = {{600, 320, 200, 50}, "VOUS AVEZ GAGNER", 0};
+        Bouton Menu = {{600, 500, 200, 50}, "Fermer le jeu", 0};
+
+        boutons[0] = Defaite;
+        boutons[1] = Menu;
+
+        for (int i = 0; i < 2; ++i) {
+            drawBouton(ecran, boutons[i]);
+        }
     }
     
 }
