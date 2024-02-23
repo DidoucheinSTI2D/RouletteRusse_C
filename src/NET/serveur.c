@@ -42,14 +42,14 @@ int serveurRun (void *data){
             SDLNet_TCP_Send(client, etatJeu, strlen(etatJeu) + 1); // Envoie l'état au client
 
             // Simulez la génération des résultats de roulette et de victoire/défaite
+            int cran = roulerRoulette();
+            int victoire = tir(chargeur, cran);              
             char resultatRoulette[256];
-            int cran = roulerRoulette(); // Supposons que cette fonction existe et retourne un cran
-            int victoire = tir(chargeur, cran); // Supposons que cette fonction vérifie la victoire
 
             // Récupérer le message de victoire ou défaite
-            void messageVictoire = victoireDefaite(victoire);
+            const char* messageVictoire = victoireDefaite(victoire);
 
-            sprintf(resultatRoulette, "Cran sélectionné: %d\n%s", cran, messageVictoire);
+            sprintf(resultatRoulette,"Cran sélectionné: %d\n%s", cran + 1, messageVictoire);
             SDLNet_TCP_Send(client, resultatRoulette, strlen(resultatRoulette) + 1);
 
         } else {

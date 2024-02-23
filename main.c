@@ -100,7 +100,8 @@ int main(){
                             if (cran < 0 || cran >= 6) { //debug
                                 printf("Erreur: L'indice cran est hors limites.\n");
                             } else {
-                                victoireDefaite(tir(chargeur, cran));
+                                const char* message = victoireDefaite(tir(chargeur, cran));
+                                printf("%s", message);                                
                             }
                         }
                         //code Lucas

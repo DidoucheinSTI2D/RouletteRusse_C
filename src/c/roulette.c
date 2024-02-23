@@ -49,11 +49,12 @@ int tir(int chargeur[6], int cran) {
     return retour;
 }
 
-void victoireDefaite(int resultat){
-    printf("%d", resultat);
+const char* victoireDefaite(int resultat){
+    static char message[128]; // Définir une taille suffisante pour le message
     if (resultat) {
-        printf("Malheureusement, vous avez perdu.\n"); 
+        snprintf(message, sizeof(message), "Malheureusement, vous avez perdu.\n");
     } else {
-        printf("Félicitations, vous avez survécu !\n"); 
+        snprintf(message, sizeof(message), "Félicitations, vous avez survécu !\n");
     }
+    return message;
 }
