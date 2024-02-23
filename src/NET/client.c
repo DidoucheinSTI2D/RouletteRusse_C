@@ -26,21 +26,31 @@ int clientRun(void *data) {
         exit(EXIT_FAILURE);
     }
 
+    char messageConfirmation[1024];
+    if (SDLNet_TCP_Recv(serveur, messageConfirmation, 1024) > 0) {
+        printf("%s", messageConfirmation); // Affiche le message de confirmation de connexion
+        // Procédez avec le reste de la logique client...
+    }
+
+    
     char serverMessage[1024];
     int quit = 0;
     while (!quit) {
         memset(serverMessage, 0, sizeof(serverMessage)); // Initialisation du buffer
-        if (SDLNet_TCP_Recv(serveur, serverMessage, 1024) > 0) {
+        
+        // Nouveau bloc de gestion de réception des messages
+        int len = SDLNet_TCP_Recv(serveur, serverMessage, 1024);
+        if (len <= 0) {
+            // Gestion d'erreur ou déconnexion
+            printf("Erreur de réception ou serveur déconnecté.\n");
+            quit = 1;
+        } else {
             printf("%s\n", serverMessage); // Affiche directement le message reçu
 
             // Vérification pour sortie
             if (strstr(serverMessage, "vous avez perdu") != NULL || strstr(serverMessage, "vous avez survécu") != NULL) {
                 quit = 1; // Sort de la boucle si le jeu est terminé
             }
-        } else {
-            // Gestion d'erreur ou déconnexion
-            printf("Erreur de réception ou serveur déconnecté.\n");
-            quit = 1;
         }
     }
 

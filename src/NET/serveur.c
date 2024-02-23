@@ -4,7 +4,7 @@
 #include <SDL/SDL_net.h>
 #include <SDL/SDL_thread.h>
 
-#include "../includes/thread.h"
+
 #include "../includes/client.h"
 #include "../includes/roulette.h"
 #define MAX_PLAYERS 6
@@ -39,6 +39,8 @@ int serveurRun (void *data){
     while(1){
         TCPsocket client = SDLNet_TCP_Accept(serveur);
         if(client != NULL) {
+            char* messageConnexion = "Connexion etablie avec succes \n";
+            SDLNet_TCP_Send(client, messageConnexion, strlen(messageConnexion) + 1); // +1 pour inclure le caractère null de fin de chaîne
             SDLNet_TCP_Send(client, etatJeu, strlen(etatJeu) + 1); // Envoie l'état au client
 
             // Simulez la génération des résultats de roulette et de victoire/défaite
